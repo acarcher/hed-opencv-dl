@@ -1,0 +1,14 @@
+[[source]]
+name = "pypi"
+verify_ssl = true
+url = "https://pypi.org/simple"
+
+[requires]
+python_version = "3.6"
+
+[dev-packages]
+
+[packages]
+imutils = "*"
+"flake8" = "*"
+"autopep8" = "*"
