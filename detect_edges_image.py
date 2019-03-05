@@ -65,3 +65,16 @@ gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 blurred = cv2.GaussianBlur(gray, (5, 5), 0)
 canny = cv2.Canny(blurred, 30, 150)
 
+# construct a blob out of the input image for the Holistically-Nested
+# Edge Detector
+blob = cv2.dnn.blobFromimage(image, scalefactor=1.0, size=(W, H),
+                            mean=(104.00698794, 116.66876762, 122.67891434),
+                            swapRB=False, crop=False)
+
+# set the blob as the input to the network and perform a forward pass
+# to compute the edges
+print("[INFO] performing holistically-nested edge detection...")
+net.setInput(blob)
+hed = net.forward()
+hed = cv2.resize(hed[0, 0], (W, H))
+hed = (255 * hed).astype("unit8")
