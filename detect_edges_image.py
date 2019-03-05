@@ -48,8 +48,8 @@ class CropLayer(object):
 print("[INFO] loading edge detector...")
 protoPath = os.path.sep.join([args["edge_detector"],
                              "deploy.prototxt"])
-modelPath = os.path.sep.join(args["edge_detector"],
-                             "hed_pretrained_bsds.caffemodel")
+modelPath = os.path.sep.join([args["edge_detector"],
+                             "hed_pretrained_bsds.caffemodel"])
 net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
 # register our new layer with the model
@@ -67,7 +67,7 @@ canny = cv2.Canny(blurred, 30, 150)
 
 # construct a blob out of the input image for the Holistically-Nested
 # Edge Detector
-blob = cv2.dnn.blobFromimage(image, scalefactor=1.0, size=(W, H),
+blob = cv2.dnn.blobFromImage(image, scalefactor=1.0, size=(W, H),
                             mean=(104.00698794, 116.66876762, 122.67891434),
                             swapRB=False, crop=False)
 
@@ -77,4 +77,11 @@ print("[INFO] performing holistically-nested edge detection...")
 net.setInput(blob)
 hed = net.forward()
 hed = cv2.resize(hed[0, 0], (W, H))
-hed = (255 * hed).astype("unit8")
+hed = (255 * hed).astype("uint8")
+
+# show the output edge detection result for Canny and
+# Holistically-Nested Edge Detection
+cv2.imshow("Input", image)
+cv2.imshow("Canny", canny)
+cv2.imshow("HED", hed)
+cv2.waitKey(0)
