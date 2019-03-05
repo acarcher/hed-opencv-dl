@@ -42,3 +42,16 @@ class CropLayer(object):
         # use the derviced (x, y)-coordinates to perform the crop
         return [inputs[0][:, :, self.startY:self.endY,
                                 self.startX:self.endX]]
+
+
+# load our serialized edge detector from disk
+print("[INFO] loading edge detector...")
+protoPath = os.path.sep.join([args["edge_detector"],
+                             "deploy.prototxt"])
+modelPath = os.path.sep.join(args["edge_detector"],
+                             "hed_pretrained_bsds.caffemodel")
+net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
+
+# register our new layer with the model
+cv2.dnn_registerLayer("Crop", CropLayer)
+
