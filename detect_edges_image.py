@@ -55,3 +55,13 @@ net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 # register our new layer with the model
 cv2.dnn_registerLayer("Crop", CropLayer)
 
+image = cv2.imread(args["image"])
+(H, W) = image.shape[:2]
+
+# convert the image to grayscale, blur it, and perform Canny
+# edge detection
+print("[INFO] performing Canny edge detection...")
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+canny = cv2.Canny(blurred, 30, 150)
+
